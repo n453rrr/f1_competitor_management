@@ -16,7 +16,7 @@ public class Competitor {
         this.scores = scores;
     }
 
-    public Competitor(int competitorNumber, String lewisHamilton, String mercedes) {
+    public Competitor() {
     }
 
     // Getter and Setter methods
@@ -69,12 +69,11 @@ public class Competitor {
 
     // Method to get full details
     public String getFullDetails() {
-        StringBuilder details = new StringBuilder();
-        details.append("Competitor number ").append(competitorNumber).append(", name ").append(name)
-                .append(", country ").append(country).append(".\n")
-                .append(name).append(" is a ").append(level).append(" aged ").append(calculateAge()).append(" and received these scores: ")
-                .append(Arrays.toString(scores)).append("\nThis gives him/her an overall score of ").append(getOverallScore()).append(".");
-        return details.toString();
+        String s = "Competitor number " + competitorNumber + ", name " + name +
+                ", country " + country + ".\n" +
+                name + " is a " + level + " aged " + calculateAge() + " and received these scores: " +
+                Arrays.toString(scores) + "\nThis gives him/her an overall score of " + getOverallScore() + ".";
+        return s;
     }
 
     // Method to get short details

@@ -2,8 +2,8 @@
 public class F1CompetitionSystem {
     public static void main(String[] args) {
         // Sample Competitors
-        Competitor competitor1 = new Competitor(100, "Lewis Hamilton", "Mercedes");
-        Competitor competitor2 = new Competitor(101, "Sebastian Vettel", "Ferrari");
+        Competitor competitor1 = new Competitor();
+        Competitor competitor2 = new Competitor();
 
         // Registration
         CompetitorManager competitorManager = new CompetitorManager() {
