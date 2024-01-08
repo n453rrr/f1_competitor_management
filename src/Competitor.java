@@ -1,119 +1,87 @@
-import java.util.Arrays;
-
 public class Competitor {
-    private int competitorNumber;
+    private int number;
     private String name;
     private String country;
-    private String level;
-    private int[] scores;
+    private String level; // e.g., "Novice"
+    private int age;
+    private int[] scores; // Array of scores
 
     // Constructor
-    public Competitor(int competitorNumber, String name, String country, String level, int[] scores) {
-        this.competitorNumber = competitorNumber;
+    public Competitor(int number, String name, String country, String level, int age, int[] scores) {
+        this.number = number;
         this.name = name;
         this.country = country;
         this.level = level;
+        this.age = age;
         this.scores = scores;
     }
 
     public Competitor() {
+
     }
 
-    // Getter and Setter methods
-    public int getCompetitorNumber() {
-        return competitorNumber;
-    }
+    // Get and Set methods
+    public int getNumber() { return number; }
+    public String getName() { return name; }
+    public String getCountry() { return country; }
+    public String getLevel() { return level; }
+    public int getAge() { return age; }
+    public int[] getScores() { return scores; }
 
-    public void setCompetitorNumber(int competitorNumber) {
-        this.competitorNumber = competitorNumber;
-    }
+    public void setNumber(int number) { this.number = number; }
+    public void setName(String name) { this.name = name; }
+    public void setCountry(String country) { this.country = country; }
+    public void setLevel(String level) { this.level = level; }
+    public void setAge(int age) { this.age = age; }
+    public void setScores(int[] scores) { this.scores = scores; }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public int[] getScores() {
-        return scores;
-    }
-
-    public void setScores(int[] scores) {
-        this.scores = scores;
-    }
-
-    // Method to calculate overall score
+    // getOverallScore method (to be modified later)
     public double getOverallScore() {
-        // Example: Calculate the average of all scores
-        int sum = Arrays.stream(scores).sum();
-        return (double) sum / scores.length;
-    }
-
-    // Method to get full details
-    public String getFullDetails() {
-        String s = "Competitor number " + competitorNumber + ", name " + name +
-                ", country " + country + ".\n" +
-                name + " is a " + level + " aged " + calculateAge() + " and received these scores: " +
-                Arrays.toString(scores) + "\nThis gives him/her an overall score of " + getOverallScore() + ".";
-        return s;
-    }
-
-    // Method to get short details
-    public String getShortDetails() {
-        return "CN " + competitorNumber + " (" + getInitials() + ") has an overall score of " + getOverallScore() + ".";
-    }
-
-    // Helper method to calculate age (you can implement your own logic)
-    private int calculateAge() {
-        // Implement your age calculation logic here
-        return 21; // Example value
-    }
-
-    // Helper method to get initials from the name
-    private String getInitials() {
-        String[] nameParts = name.split(" ");
-        StringBuilder initials = new StringBuilder();
-        for (String part : nameParts) {
-            if (!part.isEmpty()) {
-                initials.append(part.charAt(0));
-            }
+        // Calculate the overall score based on the scores array.
+        // For simplicity, let's use the average of all scores.
+        double sum = 0;
+        for (int score : scores) {
+            sum += score;
         }
-        return initials.toString().toUpperCase();
+        return sum / scores.length;
     }
 
-    public static void main(String[] args) {
-        // Example usage
-        int[] scores1 = {5, 4, 5, 4, 3};
-        Competitor competitor1 = new Competitor(100, "Lewis Hamilton", "UK", "Pro", scores1);
-        System.out.println(competitor1.getFullDetails());
-
-        int[] scores2 = {3, 3, 3, 2, 4};
-        Competitor competitor2 = new Competitor(101, "Sergio Perez", "Mexico", "Pro", scores2);
-        System.out.println(competitor2.getShortDetails());
+    // getFullDetails method
+    public String getFullDetails() {
+        StringBuilder details = new StringBuilder();
+        details.append("Competitor number ").append(number).append(", name ").append(name)
+                .append(", country ").append(country).append(".\n")
+                .append(name.split(" ")[0]).append(" is a ").append(level).append(" aged ").append(age)
+                .append(" and received these scores : ");
+        for (int score : scores) {
+            details.append(score).append(",");
+        }
+        details.deleteCharAt(details.length() - 1); // Remove last comma
+        details.append("\nThis gives him an overall score of ").append(getOverallScore()).append(".");
+        return details.toString();
     }
 
-    public void recordLapTime(float v, Competitor competitor2, int i) {
+    // getShortDetails method
+    public String getShortDetails() {
+        String initials = "";
+        for (String part : name.split(" ")) {
+            initials += part.charAt(0);
+        }
+        return "CN " + number + " (" + initials + ") has overall score " + getOverallScore() + ".";
     }
-
     public float calculateOverallPerformance() {
-        return 0;
+        // Example implementation
+        // Replace this with the actual logic you need
+        float performance = 0.0f;
+        // Calculate performance based on Competitor's properties
+        return performance;
+    }
+    // Main method for testing
+    public static void main(String[] args) {
+        int[] scores = {5, 4, 5, 4, 3};
+        Competitor competitor = new Competitor(100, "Keith John Talbot", "UK", "Novice", 21, scores);
+
+        System.out.println(competitor.getFullDetails());
+        System.out.println(competitor.getShortDetails());
     }
 }

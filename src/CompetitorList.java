@@ -1,103 +1,85 @@
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CompetitorList {
-    private final List<Competitor> competitors;
-    private int userInputNumber;
+    private List<Competitor> competitors;
 
     public CompetitorList() {
-        this.competitors = new ArrayList<>();
+        competitors = new ArrayList<>();
     }
 
     public void addCompetitor(Competitor competitor) {
         competitors.add(competitor);
     }
 
-    public Competitor getCompetitor(int competitorNumber) {
+    public String getFullDetails() {
+        StringBuilder details = new StringBuilder();
         for (Competitor competitor : competitors) {
-            if (competitor.getCompetitorNumber() == competitorNumber) {
+            details.append(competitor.getFullDetails()).append("\n");
+        }
+        return details.toString();
+    }
+
+    public Competitor getHighestScorer() {
+        if (competitors.isEmpty()) {
+            return null;
+        }
+
+        Competitor highestScorer = competitors.get(0);
+        for (Competitor competitor : competitors) {
+            if (competitor.getOverallScore() > highestScorer.getOverallScore()) {
+                highestScorer = competitor;
+            }
+        }
+        return highestScorer;
+    }
+
+    public String getSummaryStatistics() {
+        if (competitors.isEmpty()) {
+            return "No competitors available.";
+        }
+
+        double totalScore = 0;
+        double maxScore = Double.MIN_VALUE;
+        double minScore = Double.MAX_VALUE;
+        for (Competitor competitor : competitors) {
+            double score = competitor.getOverallScore();
+            totalScore += score;
+            if (score > maxScore) {
+                maxScore = score;
+            }
+            if (score < minScore) {
+                minScore = score;
+            }
+        }
+        double averageScore = totalScore / competitors.size();
+        return String.format("Average Score: %.2f, Max Score: %.2f, Min Score: %.2f, Total Competitors: %d",
+                averageScore, maxScore, minScore, competitors.size());
+    }
+
+    public String getFrequencyReport() {
+        Map<Integer, Integer> frequency = new HashMap<>();
+        for (Competitor competitor : competitors) {
+            for (int score : competitor.getScores()) {
+                frequency.put(score, frequency.getOrDefault(score, 0) + 1);
+            }
+        }
+
+        StringBuilder report = new StringBuilder();
+        frequency.forEach((score, count) ->
+                report.append("Score ").append(score).append(": ").append(count).append(" times\n")
+        );
+        return report.toString();
+    }
+
+    public Competitor findCompetitorByNumber(int number) {
+        for (Competitor competitor : competitors) {
+            if (competitor.getNumber() == number) {
                 return competitor;
             }
         }
         return null;
-    }
-
-    public void generateFinalReport() {
-        // Generate and print the final report
-        System.out.println("Final Report:");
-
-        // Table of competitors with full details
-        System.out.println("Table of Competitors:");
-        for (Competitor competitor : competitors) {
-            System.out.println(competitor.getFullDetails());
-        }
-
-        // Competitor with the highest overall score
-        Competitor highestScorer = getHighestScorer();
-        System.out.println("\nCompetitor with the highest overall score:");
-        System.out.println(highestScorer.getFullDetails());
-
-        // Other summary statistics
-        System.out.println("\nSummary Statistics:");
-        // Include your custom summary statistics logic here
-
-        // Frequency report
-        System.out.println("\nFrequency Report:");
-        // Include your frequency report logic here
-
-        // Allow the user to enter a competitor number
-        int userInputNumber = 101; // Replace with actual user input
-        Competitor userEnteredCompetitor = getCompetitor(userInputNumber);
-        if (userEnteredCompetitor != null) {
-            System.out.println("\nShort details for Competitor " + userInputNumber + ":");
-            System.out.println(userEnteredCompetitor.getShortDetails());
-        } else {
-            System.out.println("\nInvalid competitor number.");
-        }
-
-        // Check errors in the input file
-        // Implement your error-checking logic here
-    }
-
-    private Competitor getHighestScorer() {
-        // Implement logic to find the competitor with the highest overall score
-        // Placeholder implementation, replace with actual logic
-        return competitors.get(0);
-    }
-
-    public void writeToTextFile(String filePath) {
-        try (FileWriter writer = new FileWriter(filePath)) {
-            // Write the report content to the text file
-            writer.write("Final Report:\n");
-            writer.write("Table of Competitors:\n");
-            for (Competitor competitor : competitors) {
-                writer.write(competitor.getFullDetails() + "\n");
-            }
-
-            // ... Write other sections of the report ...
-
-            System.out.println("Report written to: " + filePath);
-        } catch (IOException e) {
-            System.err.println("Error writing to the file: " + e.getMessage());
-        }
-    }
-
-    public Competitor findCompetitorByNumber() {
-        return findCompetitorByNumber(0);
-    }
-
-    public Competitor findCompetitorByNumber(int userInputNumber) {
-        this.userInputNumber = userInputNumber;
-        return null;
-    }
-
-    public int getUserInputNumber() {
-        return userInputNumber;
-    }
-
-    public void setUserInputNumber(int userInputNumber) {
-        this.userInputNumber = userInputNumber;
     }
 }

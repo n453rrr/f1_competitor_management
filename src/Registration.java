@@ -15,7 +15,7 @@ class Registration {
 
     public Competitor searchCompetitor(int competitorNumber) {
         for (Competitor competitor : competitors) {
-            if (competitor.getCompetitorNumber() == competitorNumber) {
+            if (competitor.getNumber() == competitorNumber) {
                 return competitor;
             }
         }
